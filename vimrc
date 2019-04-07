@@ -52,31 +52,14 @@ NeoBundleCheck
 
 
 "----------------------------------------------------------
-" Color Scheme
+" setting for Color Scheme
 "----------------------------------------------------------
 if neobundle#is_installed('molokai')
     colorscheme molokai
 endif
 
 set t_Co=256
-syntax enable " color syntax
-
-
-"----------------------------------------------------------
-" tab, indent
-"----------------------------------------------------------
-set expandtab " Replace tab to spac3
-set tabstop=2 " tab length
-set softtabstop=2 " movement width
-set autoindent
-set smartindent
-set shiftwidth=2
-
-" overwrite setting for file types
-augroup fileTypeIndent
-    autocmd!
-    autocmd BufNewFile,BufRead *.py setlocal tabstop=2 softtabstop=2 shiftwidth=2
-augroup END
+syntax enable
 
 
 "----------------------------------------------------------
@@ -119,7 +102,73 @@ let g:syntastic_check_on_wq = 1
 
 
 "----------------------------------------------------------
-" various setting
+" Code Charcter
+"----------------------------------------------------------
+set fileencoding=utf-8
+set fileencodings=ucs-boms,utf-8,euc-jp,cp932
+set fileformats=unix,dos,mac
+set ambiwidth=double
+
+
+"----------------------------------------------------------
+" Search
+"----------------------------------------------------------
+set incsearch
+set ignorecase
+set smartcase
+set hlsearch
+
+
+"----------------------------------------------------------
+" tab, indent
+"----------------------------------------------------------
+set expandtab
+set tabstop=2
+set softtabstop=2
+set autoindent
+set smartindent
+set shiftwidth=2
+
+" overwrite setting for file types
+augroup fileTypeIndent
+    autocmd!
+    autocmd BufNewFile,BufRead *.py setlocal tabstop=2 softtabstop=2 shiftwidth=2
+augroup END
+
+
+"----------------------------------------------------------
+" Cursol
+"----------------------------------------------------------
+set whichwrap=b,s,h,l,<,>,[,],~ " enable to move from end of line to start of next line
+set number
+set cursorline
+set showmatch " visualise corresponding brackets
+
+" enable to move folded line
+nnoremap j gj
+nnoremap k gk
+nnoremap <down> gj
+nnoremap <up> gk
+
+
+"----------------------------------------------------------
+" otherwise
 "----------------------------------------------------------
 " enable BS
 set backspace=indent,eol,start
+
+
+" adjust indent for Paste
+if &term =~ "xterm"
+    let &t_SI .= "\e[?2004h"
+    let &t_EI .= "\e[?2004l"
+    let &pastetoggle = "\e[201~"
+
+    function XTermPasteBegin(ret)
+        set paste
+        return a:ret
+    endfunction
+
+    inoremap <special> <expr> <Esc>[200~ XTermPasteBegin("")
+endif
+
