@@ -100,6 +100,11 @@ let g:syntastic_check_on_open = 1
 " check also when use ':wq'
 let g:syntastic_check_on_wq = 1
 
+" python checker
+let g:syntastic_python_checkers = ['pep8']
+let g:syntastic_python_pep8_args="--ignore=E501,W601"
+
+
 
 "----------------------------------------------------------
 " Code Charcter
